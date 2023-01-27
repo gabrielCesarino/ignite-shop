@@ -2,20 +2,21 @@ import { stripe } from '@/src/lib/stripe';
 import { ImageContainer, ProductContainer, ProductDetails } from '@/src/styles/pages/product';
 import axios from 'axios';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Stripe from 'stripe';
 
 interface ProductProps {
-  product: {
-    id: string,
-    name: string,
-    imageUrl: string,
-    price: string,
-    description: string,
-    defaultPriceId: string,
-  }
+    product: {
+        id: string,
+        name: string,
+        imageUrl: string,
+        price: string,
+        description: string,
+        defaultPriceId: string,
+    }
 }
 
 export default function Product({ product }: ProductProps) {
@@ -39,29 +40,34 @@ export default function Product({ product }: ProductProps) {
 
     const { isFallback } = useRouter();
 
-    if(isFallback){
+    if (isFallback) {
         return <p>Loading...</p>
     }
 
     return (
-        <ProductContainer>
-            <ImageContainer>
-                <Image src={product.imageUrl} width={520} height={480} alt=""/>
-            </ImageContainer>
-            <ProductDetails>
-                <h1>{product.name}</h1>
-                <span>{product.price}</span>
-                <p>{product.description}</p>
+        <>
+            <Head>
+                <title>{product.name} | Ignite shop</title>
+            </Head>
+            <ProductContainer>
+                <ImageContainer>
+                    <Image src={product.imageUrl} width={520} height={480} alt="" />
+                </ImageContainer>
+                <ProductDetails>
+                    <h1>{product.name}</h1>
+                    <span>{product.price}</span>
+                    <p>{product.description}</p>
 
-                <button 
-                    disabled={isCreatingCheckoutSession} 
-                    onClick={handleBuyproduct}
-                >
-                    Comprar agora
-                </button>
+                    <button
+                        disabled={isCreatingCheckoutSession}
+                        onClick={handleBuyproduct}
+                    >
+                        Comprar agora
+                    </button>
 
-            </ProductDetails>
-        </ProductContainer>
+                </ProductDetails>
+            </ProductContainer>
+        </>
     )
 }
 
